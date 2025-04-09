@@ -1,2 +1,3 @@
 # terraform-gcp-cicd-pipeline
-Infrastructure as Code Pipeline with GCP and Terraform
+
+*Read this in other languages: [한국어](README.ko.md), [日本語](README.ja.md)*
