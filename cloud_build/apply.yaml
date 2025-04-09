@@ -1,0 +1,15 @@
+steps:
+  - id: 'Terraform Init'
+    name: 'hashicorp/terraform:1.9.2'
+    args: ['init']
+    dir: 'terraform'
+
+  - id: 'Terraform Apply'
+    name: 'hashicorp/terraform:1.9.2'
+    env:
+      - 'TF_WORKSPACE=${_WORKSPACE}'
+    args: ['apply', '-auto-approve']
+    dir: 'terraform'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
