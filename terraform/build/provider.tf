@@ -1,3 +1,21 @@
+# tfvars
+variable "project_id" {
+  description = "GCP project ID"
+}
+
+variable "region" {
+  description = "GCP region"
+}
+
+variable "installation_id" {
+  description = "git app installation_id"
+}
+
+locals {
+  project_id = var.project_id
+  region     = var.region
+}
+
 terraform {
   required_version = ">= 1.9.2"
 
