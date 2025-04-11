@@ -34,4 +34,6 @@ steps:
         terraform fmt -check -diff
         terraform init
         terraform plan || exit 1
-
+        
+options:
+  defaultLogsBucketBehavior: "REGIONAL_USER_OWNED_BUCKET"
