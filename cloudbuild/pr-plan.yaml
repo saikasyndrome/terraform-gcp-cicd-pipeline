@@ -1,6 +1,7 @@
 steps:
   - id: 'Terraform dev plan'
     name: 'hashicorp/terraform:1.9.2'
+    entrypoint: 'sh' 
     dir: 'terraform'
     env:
       - 'TF_WORKSPACE=dev'
@@ -19,6 +20,7 @@ steps:
 
   - id: 'Terraform prd plan'
     name: 'hashicorp/terraform:1.9.2'
+    entrypoint: 'sh' 
     dir: 'terraform'
     env:
       - 'TF_WORKSPACE=prd'
