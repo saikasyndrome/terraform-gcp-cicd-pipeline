@@ -99,3 +99,4 @@ resource "google_cloudbuild_trigger" "prd-tag-push-trigger" {
     google_service_account.cloudbuild_service_account
   ]
 }
+
