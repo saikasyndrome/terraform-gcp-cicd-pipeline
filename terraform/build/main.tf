@@ -19,6 +19,7 @@ resource "google_cloudbuildv2_connection" "github-connection" {
     app_installation_id = var.installation_id
     authorizer_credential {
       oauth_token_secret_version = "projects/832325408614/secrets/github-connection-github-oauthtoken-c51ea2/versions/latest"
+      # oauth_token_secret_version = data.google_secret_manager_secret_version.github-token-secret-version.id
     }
   }
 }
@@ -34,7 +35,7 @@ resource "google_cloudbuildv2_repository" "github-repository" {
 /*Cloud Build plan トリガーの作成: PRされた際のトリガー */
 
 resource "google_cloudbuild_trigger" "pr_trigger" {
-  name = "pr-trigger"
+  name     = "pr-trigger"
   location = local.region
 
   repository_event_config {

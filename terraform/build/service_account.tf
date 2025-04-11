@@ -35,6 +35,12 @@ locals {
       member  = "serviceAccount:${google_service_account.cloudbuild_service_account["cloud-build"].email}"
     },
     {
+      name    = "secretAccessor2"
+      project = local.project_id
+      role    = "roles/secretmanager.secretAccessor"
+      member  = "serviceAccount:service-832325408614@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+    },
+    {
       name    = "storageadmin"
       project = local.project_id
       role    = "roles/storage.admin"
@@ -42,7 +48,6 @@ locals {
     },
   ]
 }
-
 resource "google_service_account" "cloudbuild_service_account" {
   for_each = { for x in local.service_accounts : x.name => x }
 
