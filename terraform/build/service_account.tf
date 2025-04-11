@@ -34,6 +34,12 @@ locals {
       role    = "roles/secretmanager.secretAccessor"
       member  = "serviceAccount:${google_service_account.cloudbuild_service_account["cloud-build"].email}"
     },
+    {
+      name    = "storageadmin"
+      project = local.project_id
+      role    = "roles/storage.admin"
+      member  = "serviceAccount:${google_service_account.cloudbuild_service_account["cloud-build"].email}"
+    },
   ]
 }
 
