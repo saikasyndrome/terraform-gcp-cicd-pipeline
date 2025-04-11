@@ -32,7 +32,12 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 
+# .gitignore
+**/*.tfvars
 
 # secrets.tf
 terraform/secrets.tf
 .DS_Store
+
+#project_id
+**/backend.hcl
