@@ -1,0 +1,56 @@
+name: 'Terraform prd APPLY'
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Terraform Install'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.9.2'
+
+    - name: 'Terraform Prd Plan'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: prd
+      run: |
+        echo ""
+        echo "*************** TERRAFORM PLAN ******************"
+        echo "******* At environment: prd ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init
+        terraform plan || exit 1
+
+    - name: 'Terraform Prd APPLY'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: prd
+      run: |
+        echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: prd ********"
+        echo "************************************************"
+        echo ""
+        terraform apply -auto-approve
+
+    - name: 'Terraform Prd CHECK'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: prd
+      run: |
+        echo ""
+        echo "*************** TERRAFOM CHECK ******************"
+        echo "******* At environment: prd ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform plan || exit 1

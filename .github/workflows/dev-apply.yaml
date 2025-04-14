@@ -1,0 +1,56 @@
+name: 'Terraform dev APPLY'
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: 'Terraform Install'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.9.2'
+
+    - name: 'Terraform Dev Plan'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFORM PLAN ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init
+        terraform plan || exit 1
+
+    - name: 'Terraform Dev APPLY'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform apply -auto-approve
+
+    - name: 'Terraform Dev CHECK'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFOM CHECK ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform plan || exit 1
