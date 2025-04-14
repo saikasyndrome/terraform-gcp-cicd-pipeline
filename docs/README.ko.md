@@ -3,6 +3,9 @@
 이 리포지토리는 클라우드 인프라 엔지니어링 학습과 포트폴리오 구성을 위해 생성되었습니다.
 Google Cloud Platform (GCP)을 활용하여 인프라를 구축하고 관리하는 방법을 학습합니다.
 
+## Infrastructure Architecture
+![Architecture Diagram](./images/Architecture-Diagram.png)
+
 ## 목적
 
 이 리포지토리의 목적은 다음 스킬을 습득하는 것입니다:
