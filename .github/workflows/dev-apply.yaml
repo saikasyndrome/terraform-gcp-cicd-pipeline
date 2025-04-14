@@ -1,7 +1,9 @@
 name: 'Terraform dev APPLY'
 
 on:
-  pull_request:
+  push:
+    tags:
+      - 'dev_*'
 
 jobs:
   terraform:

@@ -1,7 +1,9 @@
 name: 'Terraform prd APPLY'
 
 on:
-  pull_request:
+  push:
+    tags:
+      - 'prd_*'
 
 jobs:
   terraform:
