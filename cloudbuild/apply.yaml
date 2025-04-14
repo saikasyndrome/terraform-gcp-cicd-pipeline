@@ -1,5 +1,5 @@
 steps:
-# [START tf-apply]
+# step1 [START tf-plan]
 - id: 'tf apply'
   name: 'hashicorp/terraform:1.9.2'
   entrypoint: 'sh'
@@ -17,9 +17,25 @@ steps:
     terraform fmt -check -diff
     terraform init -upgrade
     terraform plan
+# step2 [tf-apply]    
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.9.2'
+  entrypoint: 'sh'
+  env:
+      - 'TF_WORKSPACE=$_ENV'
+  args: 
+  - '-c'
+  - | 
+    cd /workspace/terraform/main
+    echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: $_ENV ********"
+        echo "************************************************"
+        echo ""
+    terraform fmt -check -diff
+    terraform init -upgrade
     terraform apply -auto-approve
-    terraform plan
-
+# step3 [CHECK tf-plan]   
 - id: 'tf plan check'
   name: 'hashicorp/terraform:1.9.2'
   entrypoint: 'sh'
