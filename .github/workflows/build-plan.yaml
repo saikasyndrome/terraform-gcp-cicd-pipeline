@@ -41,6 +41,8 @@ jobs:
 
     - name: 'Terraform Plan'
       working-directory: ./terraform/build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo ""
         echo "*************** TERRAFORM PLAN ******************"
