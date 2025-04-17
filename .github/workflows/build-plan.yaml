@@ -36,7 +36,7 @@ jobs:
     - name: '설정 파일 생성'
       working-directory: ./terraform/build
       run: |
-        echo 'bucket = "${{ secrets.TF_BUCKET }}"' > backend.hcl
+        echo "bucket = \"${{ secrets.TF_BUCKET }}\"" > backend.hcl
         echo '${{ secrets.TF_VARS }}' > terraform.tfvars
 
     - name: 'Terraform Plan'
