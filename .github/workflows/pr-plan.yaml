@@ -59,4 +59,4 @@ jobs:
         echo ""
         terraform fmt -check -diff
         terraform init
-        terraform plan -no-color | tfcmt plan
+        tfcmt plan -patch -- terraform plan -no-color || exit 1
