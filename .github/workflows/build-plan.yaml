@@ -50,5 +50,6 @@ jobs:
         echo ""
         terraform fmt
         cat backend.hcl
+        cat terraform.tfvars
         terraform init -backend-config=backend.hcl
         tfcmt plan -patch -- terraform plan -no-color || exit 1
