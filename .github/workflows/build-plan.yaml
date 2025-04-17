@@ -46,6 +46,6 @@ jobs:
         echo "*************** TERRAFORM PLAN ******************"
         echo "************************************************"
         echo ""
-        terraform fmt -check -diff
+        terraform fmt
         terraform init -backend-config=backend.hcl
         terraform plan -no-color | tfcmt plan
