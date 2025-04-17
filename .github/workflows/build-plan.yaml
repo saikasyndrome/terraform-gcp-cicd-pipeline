@@ -36,8 +36,8 @@ jobs:
     - name: '설정 파일 생성'
       working-directory: ./terraform/build
       run: |
-        cat <<< ${{ secrets.TF_BUCKET }} > backend.hcl
-        cat <<< ${{ secrets.TF_VARS }} > terraform.tfvars
+        cat << ${{ secrets.TF_BUCKET }} > backend.hcl
+        cat << ${{ secrets.TF_VARS }} > terraform.tfvars
 
     - name: 'Terraform Plan'
       working-directory: ./terraform/build
