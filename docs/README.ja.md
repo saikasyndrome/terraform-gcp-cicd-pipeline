@@ -3,6 +3,9 @@
 このリポジトリは、クラウドインフラエンジニアリングの学習とポートフォリオ作成のために作られました。
 Google Cloud Platform (GCP)を活用してインフラを構築・管理する方法を学習します。
 
+## Infrastructure Architecture
+![Architecture Diagram](./images/Architecture-Diagram.png)
+
 ## 目的
 
 このリポジトリの目的は、以下のスキルを習得することです：

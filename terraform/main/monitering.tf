@@ -60,7 +60,7 @@ locals {
       name           = "uptime-${terraform.workspace}"
       project        = local.project_id[terraform.workspace]
       #NEW
-      host           = "saikasyndrome.${terraform.workspace}.dev"
+      host           = "saikasyndrome.${terraform.workspace}..dev"
       period         = "60s" # 1 minute
       timeout        = "10s"
       path           = "/"

@@ -1,9 +1,10 @@
-name: 'Terraform Plan'
+name: 'Terraform Build Plan'
 
 permissions:
   contents: read
   id-token: write
   pull-requests: write #tfcmt
+  issues: write #tfcmt
 
 on:
   pull_request:
@@ -33,30 +34,23 @@ jobs:
         tar xvzf tfcmt_linux_amd64.tar.gz
         sudo mv tfcmt /usr/local/bin/
 
-    - name: 'Terraform Dev Plan'
-      working-directory: ./terraform/main
-      env:
-        TF_WORKSPACE: dev
+    - name: '설정 파일 생성'
+      working-directory: ./terraform/build
       run: |
-        echo ""
-        echo "*************** TERRAFOM PLAN ******************"
-        echo "******* At environment: dev ********"
-        echo "************************************************"
-        echo ""
-        terraform fmt -check -diff
-        terraform init
-        terraform plan -no-color | tfcmt plan
+        printf "%s\n" "${{ secrets.TF_BUCKET }}" > backend.hcl
+        printf "%s\n" "${{ secrets.TF_VARS }}" > terraform.tfvars
 
-    - name: 'Terraform Prd Plan'
-      working-directory: ./terraform/main
+    - name: 'Terraform Plan'
+      working-directory: ./terraform/build
       env:
-        TF_WORKSPACE: prd
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         echo ""
-        echo "*************** TERRAFOM PLAN ******************"
-        echo "******* At environment: prd ********"
+        echo "*************** TERRAFORM PLAN ******************"
         echo "************************************************"
         echo ""
-        terraform fmt -check -diff
-        terraform init
+        terraform fmt
+        cat backend.hcl
+        cat terraform.tfvars
+        terraform init -backend-config=backend.hcl
         tfcmt plan -patch -- terraform plan -no-color || exit 1
