@@ -1,0 +1,51 @@
+name: 'Terraform Build Plan'
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write #tfcmt
+
+on:
+  pull_request:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - id: 'auth'
+      name: 'GCP Authentication'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+    - name: 'Terraform Install'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.9.2'
+
+    - name: 'Install tfcmt'
+      run: |
+        wget https://github.com/suzuki-shunsuke/tfcmt/releases/download/v4.14.5/tfcmt_linux_amd64.tar.gz
+        tar xvzf tfcmt_linux_amd64.tar.gz
+        sudo mv tfcmt /usr/local/bin/
+
+    - name: '설정 파일 생성'
+      working-directory: ./terraform/build
+      run: |
+        echo 'bucket = "${{ secrets.TF_BUCKET }}"' > backend.hcl
+        echo '${{ secrets.TF_VARS }}' > terraform.tfvars
+
+    - name: 'Terraform Plan'
+      working-directory: ./terraform/build
+      run: |
+        echo ""
+        echo "*************** TERRAFORM PLAN ******************"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init -backend-config=backend.hcl
+        terraform plan -no-color | tfcmt plan
