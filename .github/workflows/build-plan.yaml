@@ -51,4 +51,4 @@ jobs:
         terraform fmt
         cat backend.hcl
         terraform init -backend-config=backend.hcl
-        terraform plan -no-color | tfcmt plan --patch --title "Terraform Plan Result"
+        terraform plan -no-color | tfcmt plan --patch
