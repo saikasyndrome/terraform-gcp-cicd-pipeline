@@ -1,0 +1,41 @@
+steps:
+  - id: 'Terraform dev plan'
+    name: 'hashicorp/terraform:1.9.2'
+    entrypoint: 'sh' 
+    dir: 'terraform'
+    env:
+      - 'TF_WORKSPACE=dev'
+    args:
+      - "-c"
+      - |
+        cd /workspace/terraform/main
+        echo ""
+        echo "*************** TERRAFOM PLAN ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init
+        terraform plan || exit 1
+
+  - id: 'Terraform prd plan'
+    name: 'hashicorp/terraform:1.9.2'
+    entrypoint: 'sh' 
+    dir: 'terraform'
+    env:
+      - 'TF_WORKSPACE=prd'
+    args:
+      - "-c"
+      - |
+        cd /workspace/terraform/main
+        echo ""
+        echo "*************** TERRAFOM PLAN ******************"
+        echo "******* At environment: prd ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init
+        terraform plan || exit 1
+        
+options:
+  defaultLogsBucketBehavior: "REGIONAL_USER_OWNED_BUCKET"

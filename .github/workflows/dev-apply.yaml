@@ -1,0 +1,64 @@
+name: 'Terraform dev APPLY'
+
+on:
+  push:
+    tags:
+      - 'dev_*'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - id: 'auth'
+      name: 'GCP Authentication'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: 'projects/832325408614/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+        service_account: 'gitapps@ca-shinjeongho-edu.iam.gserviceaccount.com'
+
+    - name: 'Terraform Install'
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: '1.9.2'
+
+    - name: 'Terraform Dev Plan'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFORM PLAN ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform init
+        terraform plan || exit 1
+
+    - name: 'Terraform Dev APPLY'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform apply -auto-approve
+
+    - name: 'Terraform Dev CHECK'
+      working-directory: ./terraform/main
+      env:
+        TF_WORKSPACE: dev
+      run: |
+        echo ""
+        echo "*************** TERRAFOM CHECK ******************"
+        echo "******* At environment: dev ********"
+        echo "************************************************"
+        echo ""
+        terraform fmt -check -diff
+        terraform plan || exit 1

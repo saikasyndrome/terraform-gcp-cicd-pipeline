@@ -1,0 +1,57 @@
+steps:
+# step1 [START tf-plan]
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.9.2'
+  entrypoint: 'sh'
+  env:
+      - 'TF_WORKSPACE=$_ENV'
+  args: 
+  - '-c'
+  - | 
+    cd /workspace/terraform/main
+    echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: $_ENV ********"
+        echo "************************************************"
+        echo ""
+    terraform fmt -check -diff
+    terraform init -upgrade
+    terraform plan
+# step2 [tf-apply]    
+- id: 'tf apply'
+  name: 'hashicorp/terraform:1.9.2'
+  entrypoint: 'sh'
+  env:
+      - 'TF_WORKSPACE=$_ENV'
+  args: 
+  - '-c'
+  - | 
+    cd /workspace/terraform/main
+    echo ""
+        echo "*************** TERRAFOM APPLY ******************"
+        echo "******* At environment: $_ENV ********"
+        echo "************************************************"
+        echo ""
+    terraform fmt -check -diff
+    terraform init -upgrade
+    terraform apply -auto-approve
+# step3 [CHECK tf-plan]   
+- id: 'tf plan check'
+  name: 'hashicorp/terraform:1.9.2'
+  entrypoint: 'sh'
+  env:
+      - 'TF_WORKSPACE=$_ENV'
+  args: 
+  - '-c'
+  - | 
+    cd /workspace/terraform/main
+    echo ""
+        echo "*************** TERRAFOM PLAN ******************"
+        echo "******* At environment: $_ENV ********"
+        echo "************************************************"
+        echo ""
+    terraform fmt -check -diff
+    terraform init -upgrade
+    terraform plan
+options:
+  defaultLogsBucketBehavior: "REGIONAL_USER_OWNED_BUCKET"
